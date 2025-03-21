@@ -199,7 +199,7 @@ export default function ListPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-xl">Loading...</p>
+        <p className="text-xl">loading...</p>
       </div>
     );
   }
@@ -207,7 +207,7 @@ export default function ListPage() {
   if (!list) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-xl">List not found</p>
+        <p className="text-xl">list not found</p>
       </div>
     );
   }
@@ -238,7 +238,7 @@ export default function ListPage() {
             <div className="p-4 bg-white rounded-lg shadow-lg">
               <QRCodeSVG value={listUrl} size={200} />
               <p className="mt-2 text-sm text-gray-500">
-                Scan to access this list
+                scan to access this list
               </p>
             </div>
           </div>
@@ -248,7 +248,7 @@ export default function ListPage() {
           <div className="flex gap-2">
             <Input
               type="text"
-              placeholder="Add new item"
+              placeholder="add new item"
               value={newItem}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setNewItem(e.target.value)
@@ -257,7 +257,7 @@ export default function ListPage() {
                 e.key === "Enter" && handleAddItem()
               }
             />
-            <Button onClick={handleAddItem}>Add</Button>
+            <Button onClick={handleAddItem}>add</Button>
           </div>
 
           <ul className="space-y-2 mb-20">
@@ -294,7 +294,7 @@ export default function ListPage() {
                   onClick={() => handleDeleteItem(item.id)}
                   className="ml-2"
                 >
-                  Delete
+                  delete
                 </Button>
               </li>
             ))}
@@ -311,12 +311,12 @@ export default function ListPage() {
         {isCopied ? (
           <>
             <Check className="h-5 w-5" />
-            <span>Copied!</span>
+            <span>copied!</span>
           </>
         ) : (
           <>
             <Copy className="h-5 w-5" />
-            <span>Copy URL</span>
+            <span>copy URL</span>
           </>
         )}
       </Button>

@@ -35,19 +35,19 @@ export default function CreateList() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4">
+    <div className="flex flex-col items-center justify-center p-4">
       <main className="max-w-md w-full space-y-8">
         <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold">Create New List</h1>
+          <h1 className="text-4xl font-bold">create new list</h1>
           <p className="text-muted-foreground">
-            Give your shopping list a name to get started
+            give your shopping list a name to get started
           </p>
         </div>
 
         <div className="space-y-4">
           <Input
             type="text"
-            placeholder="Enter list name"
+            placeholder="enter list name"
             value={listName}
             onChange={(e) => setListName(e.target.value)}
             className="w-full"
@@ -57,7 +57,7 @@ export default function CreateList() {
             className="w-full"
             disabled={!listName.trim() || isCreating}
           >
-            {isCreating ? "Creating..." : "Create List"}
+            {isCreating ? "creating..." : "create list"}
           </Button>
         </div>
       </main>
