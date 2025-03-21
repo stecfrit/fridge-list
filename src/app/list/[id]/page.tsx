@@ -7,7 +7,6 @@ import { QRCodeSVG } from "qrcode.react";
 import { useParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import type { Database } from "@/lib/supabase";
-import type { RealtimeChannel } from "@supabase/supabase-js";
 import { cn } from "@/lib/utils";
 
 type List = Database["public"]["Tables"]["lists"]["Row"];
