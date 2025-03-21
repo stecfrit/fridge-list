@@ -8,6 +8,7 @@ import { useParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import type { Database } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
+import { Copy, Check } from "lucide-react";
 
 type List = Database["public"]["Tables"]["lists"]["Row"];
 type Item = Database["public"]["Tables"]["items"]["Row"];
@@ -18,6 +19,14 @@ export default function ListPage() {
   const [items, setItems] = useState<Item[]>([]);
   const [newItem, setNewItem] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleCopyUrl = async () => {
+    const url = window.location.href;
+    await navigator.clipboard.writeText(url);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
+  };
 
   useEffect(() => {
     // Fetch initial list and items data
@@ -131,6 +140,7 @@ export default function ListPage() {
       console.log("Unsubscribing from channel");
       channelRef.unsubscribe();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
 
   const handleAddItem = async () => {
@@ -205,10 +215,25 @@ export default function ListPage() {
   const listUrl = `${window.location.origin}/list/${list.id}`;
 
   return (
-    <div className="min-h-screen p-4">
+    <div className="container mx-auto p-4 max-w-2xl">
       <main className="max-w-2xl mx-auto space-y-8">
         <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold">{list.name}</h1>
+          <div className="flex items-center justify-center gap-2">
+            <h1 className="text-4xl font-bold">{list.name}</h1>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleCopyUrl}
+              className="h-8 w-8 hidden md:flex"
+              title="Copy URL"
+            >
+              {isCopied ? (
+                <Check className="h-4 w-4" />
+              ) : (
+                <Copy className="h-4 w-4" />
+              )}
+            </Button>
+          </div>
           <div className="flex justify-center">
             <div className="p-4 bg-white rounded-lg shadow-lg">
               <QRCodeSVG value={listUrl} size={200} />
@@ -235,7 +260,7 @@ export default function ListPage() {
             <Button onClick={handleAddItem}>Add</Button>
           </div>
 
-          <ul className="space-y-2">
+          <ul className="space-y-2 mb-20">
             {items.map((item) => (
               <li
                 key={item.id}
@@ -276,6 +301,25 @@ export default function ListPage() {
           </ul>
         </div>
       </main>
+      {/* Mobile floating action button */}
+      <Button
+        variant="default"
+        onClick={handleCopyUrl}
+        className="fixed bottom-6 right-6 px-4 py-2 rounded-full shadow-lg md:hidden flex items-center gap-2"
+        title="Copy URL"
+      >
+        {isCopied ? (
+          <>
+            <Check className="h-5 w-5" />
+            <span>Copied!</span>
+          </>
+        ) : (
+          <>
+            <Copy className="h-5 w-5" />
+            <span>Copy URL</span>
+          </>
+        )}
+      </Button>
     </div>
   );
 }

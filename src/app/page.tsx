@@ -6,7 +6,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
       <main className="max-w-md w-full space-y-8">
         <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold">Shopping List App</h1>
+          <h1 className="text-4xl font-bold">Fridge List</h1>
           <p className="text-muted-foreground">
             Create and manage your household shopping lists with QR codes
           </p>

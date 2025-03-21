@@ -20,7 +20,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Shopping List",
+  title: "Fridge List",
   description: "A simple shopping list app with QR code sharing",
 };
 
