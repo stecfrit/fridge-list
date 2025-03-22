@@ -8,7 +8,7 @@ import { useParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import type { Database } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
-import { Copy, Check } from "lucide-react";
+import { Copy, Check, Trash2 } from "lucide-react";
 
 type List = Database["public"]["Tables"]["lists"]["Row"];
 type Item = Database["public"]["Tables"]["items"]["Row"];
@@ -20,6 +20,7 @@ export default function ListPage() {
   const [newItem, setNewItem] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isCopied, setIsCopied] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   const handleCopyUrl = async () => {
     const url = window.location.href;
@@ -235,7 +236,7 @@ export default function ListPage() {
             </Button>
           </div>
           <div className="flex justify-center">
-            <div className="p-4 bg-white rounded-lg shadow-lg">
+            <div className="p-4 bg-white rounded-lg">
               <QRCodeSVG value={listUrl} size={200} />
               <p className="mt-2 text-sm text-gray-500">
                 scan to access this list
@@ -245,27 +246,37 @@ export default function ListPage() {
         </div>
 
         <div className="space-y-4">
-          <div className="flex gap-2">
-            <Input
-              type="text"
-              placeholder="add new item"
-              value={newItem}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setNewItem(e.target.value)
-              }
-              onKeyDown={(e: KeyboardEvent<HTMLInputElement>) =>
-                e.key === "Enter" && handleAddItem()
-              }
-            />
-            <Button onClick={handleAddItem}>add</Button>
+          <div className="flex gap-1 items-center justify-between">
+            <div className="flex gap-2 flex-1">
+              <Input
+                type="text"
+                placeholder="add new item"
+                value={newItem}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setNewItem(e.target.value)
+                }
+                onKeyDown={(e: KeyboardEvent<HTMLInputElement>) =>
+                  e.key === "Enter" && handleAddItem()
+                }
+              />
+              <Button className="font-mono" onClick={handleAddItem}>
+                add
+              </Button>
+            </div>
+            <Button
+              variant="secondary"
+              size="default"
+              onClick={() => setIsEditMode(!isEditMode)}
+              className="h-9 font-mono"
+              title={isEditMode ? "Exit edit mode" : "Enter edit mode"}
+            >
+              {isEditMode ? "done" : "edit"}
+            </Button>
           </div>
 
-          <ul className="space-y-2 mb-20">
+          <ul className="mb-20">
             {items.map((item) => (
-              <li
-                key={item.id}
-                className="flex items-center gap-2 p-2 bg-white rounded-lg shadow"
-              >
+              <li key={item.id} className="flex items-center p-2 bg-white">
                 <div
                   className="flex items-center flex-1 cursor-pointer"
                   onClick={() => handleToggleItem(item)}
@@ -282,7 +293,7 @@ export default function ListPage() {
                   <span
                     className={cn(
                       "ml-2 flex-1",
-                      item.completed ? "line-through text-gray-500" : ""
+                      item.completed ? "line-through text-primary" : ""
                     )}
                   >
                     {item.text}
@@ -292,9 +303,12 @@ export default function ListPage() {
                   variant="ghost"
                   size="sm"
                   onClick={() => handleDeleteItem(item.id)}
-                  className="ml-2"
+                  className={cn(
+                    "ml-2 transition-opacity duration-200 text-destructive hover:text-destructive hover:bg-destructive/10",
+                    isEditMode ? "opacity-100" : "opacity-0 pointer-events-none"
+                  )}
                 >
-                  delete
+                  <Trash2 className="h-4 w-4" />
                 </Button>
               </li>
             ))}
@@ -305,7 +319,7 @@ export default function ListPage() {
       <Button
         variant="default"
         onClick={handleCopyUrl}
-        className="fixed bottom-6 right-6 px-4 py-2 rounded-full shadow-lg md:hidden flex items-center gap-2"
+        className="fixed bottom-6 right-6 px-4 py-2 rounded-full md:hidden flex items-center gap-2"
         title="Copy URL"
       >
         {isCopied ? (
