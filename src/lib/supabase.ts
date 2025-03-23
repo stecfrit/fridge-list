@@ -48,6 +48,26 @@ export type Database = {
           created_at?: string;
         };
       };
+      comments: {
+        Row: {
+          id: string;
+          list_id: string;
+          content: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          list_id: string;
+          content: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          list_id?: string;
+          content?: string;
+          created_at?: string;
+        };
+      };
     };
   };
 };

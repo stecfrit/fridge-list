@@ -9,6 +9,8 @@ import { useList } from "@/hooks/use-list";
 import { QRCode } from "@/components/qr-code";
 import { ListItem } from "@/components/list-item";
 import { MobileCopyButton } from "@/components/mobile-copy-button";
+import { Comments } from "@/components/comments";
+import { Separator } from "@/components/ui/separator";
 import { Database } from "@/lib/supabase";
 
 type Item = Database["public"]["Tables"]["items"]["Row"];
@@ -130,7 +132,7 @@ export default function ListPage() {
             </Button>
           </div>
 
-          <ul className="mb-20">
+          <ul className="mb-8">
             {items.map((item) => (
               <ListItem
                 key={item.id}
@@ -141,6 +143,10 @@ export default function ListPage() {
               />
             ))}
           </ul>
+
+          <Separator className="my-8" />
+
+          <Comments listId={list.id} />
         </div>
       </main>
       <MobileCopyButton isCopied={isCopied} onCopy={handleCopyUrl} />
