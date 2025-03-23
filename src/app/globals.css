@@ -58,3 +58,12 @@
     @apply bg-background text-foreground font-sans;
   }
 }
+
+@keyframes rainbow-flow {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 200% 0%;
+  }
+}

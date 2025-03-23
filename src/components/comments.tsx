@@ -5,12 +5,25 @@ import { MessageSquare, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Database } from "@/lib/supabase";
 import { supabase } from "@/lib/supabase";
+import { RainbowText } from "@/components/rainbow-text";
 
 type Comment = Database["public"]["Tables"]["comments"]["Row"];
 
 interface CommentsProps {
   listId: string;
   className?: string;
+}
+
+function formatCommentContent(content: string) {
+  const parts = content.split(/(\$\$.*?\$\$)/g);
+
+  return parts.map((part, index) => {
+    if (part.startsWith("$$") && part.endsWith("$$")) {
+      const text = part.slice(2, -2);
+      return <RainbowText key={index} text={text} />;
+    }
+    return part;
+  });
 }
 
 export function Comments({ listId, className }: CommentsProps) {
@@ -95,7 +108,7 @@ export function Comments({ listId, className }: CommentsProps) {
 
       <div className="space-y-2">
         <Textarea
-          placeholder="Add a comment..."
+          placeholder="add a comment..."
           value={newComment}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
             setNewComment(e.target.value)
@@ -118,7 +131,7 @@ export function Comments({ listId, className }: CommentsProps) {
             key={comment.id}
             className="p-3 rounded-lg bg-muted/50 space-y-1"
           >
-            <p className="text-sm">{comment.content}</p>
+            <p className="text-sm">{formatCommentContent(comment.content)}</p>
             <p className="text-xs text-muted-foreground">
               {new Date(comment.created_at).toLocaleString()}
             </p>
