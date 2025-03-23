@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Scroll } from "lucide-react";
+import { ThemeToggle } from "./theme-toggle";
 
 export function Header() {
   return (
@@ -9,6 +10,7 @@ export function Header() {
           <Scroll className="h-6 w-6" />
           <span>fridge list</span>
         </Link>
+        <ThemeToggle />
       </div>
     </header>
   );
