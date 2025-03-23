@@ -9,6 +9,9 @@ import { useList } from "@/hooks/use-list";
 import { QRCode } from "@/components/qr-code";
 import { ListItem } from "@/components/list-item";
 import { MobileCopyButton } from "@/components/mobile-copy-button";
+import { Database } from "@/lib/supabase";
+
+type Item = Database["public"]["Tables"]["items"]["Row"];
 
 export default function ListPage() {
   const params = useParams();
@@ -34,14 +37,16 @@ export default function ListPage() {
       await addItem(newItem);
       setNewItem("");
     } catch (error) {
+      console.error("Error adding item:", error);
       alert("Failed to add item. Please try again.");
     }
   };
 
-  const handleToggleItem = async (item: any) => {
+  const handleToggleItem = async (item: Item) => {
     try {
       await toggleItem(item);
     } catch (error) {
+      console.error("Error toggling item:", error);
       alert("Failed to update item. Please try again.");
     }
   };
@@ -50,6 +55,7 @@ export default function ListPage() {
     try {
       await deleteItem(itemId);
     } catch (error) {
+      console.error("Error deleting item:", error);
       alert("Failed to delete item. Please try again.");
     }
   };
